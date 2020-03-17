@@ -8,6 +8,7 @@ const _ = require('lodash')
 const config = require('./config')
 const commands = require('./commands')
 const helpCommand = require('./commands/help')
+const throwCommand = require('./commands/throw')
 
 let bot = require('./bot')
 
@@ -24,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') })
 
-app.post('/commands/starbot', (req, res) => {
+app.post('/commands/throw', (req, res) => {
   let payload = req.body
 
   if (!payload || payload.token !== config('STARBOT_COMMAND_TOKEN')) {
@@ -35,9 +36,9 @@ app.post('/commands/starbot', (req, res) => {
     return
   }
 
-  let cmd = _.reduce(commands, (a, cmd) => {
-    return payload.text.match(cmd.pattern) ? cmd : a
-  }, helpCommand)
+  console.log(payload)
+
+  let cmd = throwCommand;
 
   cmd.handler(payload, res)
 })
